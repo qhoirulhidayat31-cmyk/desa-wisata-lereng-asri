@@ -35,23 +35,36 @@ export function WhatsAppBookingModal({
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
+    if (!isOpen) return;
     if (initialPackage) {
       setSelectedPkgId(initialPackage.id);
       setPax(Math.max(initialPackage.minPax, 2));
+    } else {
+      setSelectedPkgId(TOUR_PACKAGES[0].id);
+      setPax(Math.max(TOUR_PACKAGES[0].minPax, 2));
     }
+
     if (initialTopic) {
       setNotes(`Saya ingin menanyakan informasi mengenai ${initialTopic}.`);
+    } else {
+      setNotes('');
     }
     setCopied(false);
   }, [initialPackage, initialTopic, isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', handleEsc);
+    };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;

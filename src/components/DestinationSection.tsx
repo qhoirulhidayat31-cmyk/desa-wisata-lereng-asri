@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Clock, Footprints, MapPin, X, Check } from 'lucide-react';
 import {
   DESTINATIONS,
@@ -28,6 +28,21 @@ export function DestinationSection({
 }: DestinationSectionProps) {
   const [activeCategory, setActiveCategory] = useState<DestinationCategory>('Semua');
   const [selectedDest, setSelectedDest] = useState<DestinationItem | null>(null);
+
+  useEffect(() => {
+    if (!selectedDest) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedDest(null);
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, [selectedDest]);
 
   const filtered =
     activeCategory === 'Semua'
@@ -128,7 +143,7 @@ export function DestinationSection({
                   <button
                     type="button"
                     onClick={() => setSelectedDest(dest)}
-                    className="min-h-[48px] px-4 py-2.5 rounded-full border-[1.5px] border-[#1B4D3E] text-[#1B4D3E] hover:bg-[#1B4D3E]/6 text-[15px] font-semibold transition-colors cursor-pointer whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B4D3E]"
+                    className="min-h-[48px] px-4 py-2.5 rounded-full border-[1.5px] border-[#1B4D3E] text-[#1B4D3E] hover:bg-[#EBF6ED] text-[15px] font-semibold transition-colors cursor-pointer whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1B4D3E]"
                   >
                     Info Lengkap
                   </button>

@@ -37,11 +37,12 @@ export function LocationMapSection({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
           {/* Interactive Topographical Village Map Container */}
           <div className="lg:col-span-7 bg-white rounded-2xl border border-[#EAE6DF] overflow-hidden shadow-[0_2px_8px_-2px_rgba(27,77,62,0.06)] flex flex-col">
-            <div className="relative flex-1 min-h-[360px] sm:min-h-[420px] bg-[#E5F1E7] overflow-hidden">
+            <div className="relative w-full aspect-[16/11] sm:aspect-[16/10] bg-[#E5F1E7] overflow-hidden">
               {/* Custom stylized vector topographic map of Desa Wisata Lereng Asri */}
               <svg
                 viewBox="0 0 800 500"
-                className="w-full h-full object-cover absolute inset-0"
+                preserveAspectRatio="none"
+                className="w-full h-full absolute inset-0"
                 aria-hidden="true"
               >
                 <defs>
@@ -136,11 +137,11 @@ export function LocationMapSection({
                 />
 
                 {/* Subtle compass label */}
-                <text x="28" y="42" fill="#1B4D3E" fontSize="13" fontWeight="700" opacity="0.7">
-                  UTARA · LERENG 985 MDPL
+                <text x="24" y="36" fill="#1B4D3E" fontSize="13" fontWeight="700" opacity="0.75">
+                  UTARA · 985 MDPL
                 </text>
-                <text x="380" y="482" fill="#404945" fontSize="12" fontWeight="600">
-                  Arah Jalan Raya Magelang (45 mnt)
+                <text x="386" y="482" fill="#404945" fontSize="12" fontWeight="600">
+                  Arah Jalan Raya Magelang
                 </text>
               </svg>
 
@@ -167,9 +168,9 @@ export function LocationMapSection({
                       }`}
                     >
                       <span
-                        className={`w-10 h-10 rounded-full flex items-center justify-center font-extrabold text-sm shadow-lg border-2 border-white transition-colors ${
+                        className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-extrabold text-xs sm:text-sm shadow-lg border-2 border-white transition-colors ${
                           isSelected
-                            ? 'bg-[#1B4D3E] text-white'
+                            ? 'bg-[#1B4D3E] text-white ring-4 ring-[#1B4D3E]/25'
                             : 'bg-[#C86432] text-white group-hover:bg-[#9D4413]'
                         }`}
                       >
@@ -195,9 +196,9 @@ export function LocationMapSection({
                   href={googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 min-h-[44px] px-4 py-2 rounded-full bg-white hover:bg-[#FAF8F5] text-[#1B4D3E] text-sm font-bold shadow-md border border-[#EAE6DF] transition-colors whitespace-nowrap"
+                  className="inline-flex items-center gap-1.5 min-h-[40px] sm:min-h-[44px] px-3.5 sm:px-4 py-2 rounded-full bg-white hover:bg-[#FAF8F5] text-[#1B4D3E] text-xs sm:text-sm font-bold shadow-md border border-[#EAE6DF] transition-colors whitespace-nowrap"
                 >
-                  <Navigation className="w-4 h-4 text-[#C86432]" aria-hidden="true" />
+                  <Navigation className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#C86432]" aria-hidden="true" />
                   <span>Google Maps</span>
                   <ExternalLink className="w-3.5 h-3.5 opacity-70" aria-hidden="true" />
                 </a>
@@ -205,7 +206,7 @@ export function LocationMapSection({
                   href={wazeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 min-h-[44px] px-4 py-2 rounded-full bg-white hover:bg-[#FAF8F5] text-[#1B4D3E] text-sm font-bold shadow-md border border-[#EAE6DF] transition-colors whitespace-nowrap"
+                  className="inline-flex items-center gap-1.5 min-h-[40px] sm:min-h-[44px] px-3.5 sm:px-4 py-2 rounded-full bg-white hover:bg-[#FAF8F5] text-[#1B4D3E] text-xs sm:text-sm font-bold shadow-md border border-[#EAE6DF] transition-colors whitespace-nowrap"
                 >
                   <span>Waze</span>
                   <ExternalLink className="w-3.5 h-3.5 opacity-70" aria-hidden="true" />
@@ -323,7 +324,7 @@ export function LocationMapSection({
                 href={googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 min-h-[48px] px-6 py-3 rounded-full border-[1.5px] border-[#1B4D3E] text-[#1B4D3E] hover:bg-[#1B4D3E]/6 text-[15px] font-semibold transition-colors"
+                className="w-full inline-flex items-center justify-center gap-2 min-h-[48px] px-6 py-3 rounded-full border-[1.5px] border-[#1B4D3E] text-[#1B4D3E] hover:bg-[#EBF6ED] text-[15px] font-semibold transition-colors"
               >
                 <Navigation className="w-4 h-4" aria-hidden="true" />
                 <span>Petunjuk Arah di Google Maps</span>

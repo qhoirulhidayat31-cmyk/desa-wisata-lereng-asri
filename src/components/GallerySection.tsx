@@ -10,6 +10,9 @@ export function GallerySection() {
 
   useEffect(() => {
     if (lightboxIndex === null) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setLightboxIndex(null);
       if (e.key === 'ArrowRight') {
@@ -26,7 +29,10 @@ export function GallerySection() {
       }
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [lightboxIndex]);
 
   const handleCarouselScroll = () => {
@@ -108,7 +114,7 @@ export function GallerySection() {
                 type="button"
                 aria-label={`Lihat foto ${idx + 1}: ${photo.title}`}
                 onClick={() => scrollToSlide(idx)}
-                className={`min-h-[28px] px-1 flex items-center justify-center cursor-pointer`}
+                className="min-h-[28px] px-1 flex items-center justify-center cursor-pointer"
               >
                 <span
                   className={`block h-2 rounded-full transition-all ${
@@ -158,13 +164,13 @@ export function GallerySection() {
       {/* Lightbox Overlay */}
       {activePhoto && lightboxIndex !== null && (
         <div
-          className="fixed inset-0 z-50 bg-[#141E18]/92 backdrop-blur-sm flex flex-col justify-between p-4 sm:p-6"
+          className="fixed inset-0 z-50 bg-[#141E18]/92 backdrop-blur-sm flex flex-col justify-between p-4 sm:p-6 overflow-y-auto"
           role="dialog"
           aria-modal="true"
           aria-label={activePhoto.title}
           onClick={() => setLightboxIndex(null)}
         >
-          <div className="flex items-center justify-between text-white max-w-5xl w-full mx-auto">
+          <div className="flex items-center justify-between text-white max-w-5xl w-full mx-auto shrink-0">
             <span className="text-sm font-semibold tabular-nums text-[#E5F1E7]">
               Foto {lightboxIndex + 1} dari {GALLERY_PHOTOS.length}
             </span>
@@ -179,7 +185,7 @@ export function GallerySection() {
           </div>
 
           <div
-            className="max-w-5xl w-full mx-auto flex items-center gap-3 sm:gap-5 my-auto"
+            className="max-w-5xl w-full mx-auto flex flex-col sm:flex-row items-center gap-4 sm:gap-5 my-auto py-3"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -190,13 +196,13 @@ export function GallerySection() {
                 )
               }
               aria-label="Foto sebelumnya"
-              className="w-12 h-12 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center shrink-0 cursor-pointer"
+              className="hidden sm:flex w-12 h-12 rounded-full bg-white/15 hover:bg-white/25 text-white items-center justify-center shrink-0 cursor-pointer"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
 
-            <div className="flex-1 bg-[#0D241D] rounded-2xl overflow-hidden shadow-2xl">
-              <div className="aspect-[16/10] max-h-[65vh] w-full">
+            <div className="w-full flex-1 bg-[#0D241D] rounded-2xl overflow-hidden shadow-2xl">
+              <div className="aspect-[16/10] max-h-[60vh] w-full">
                 <ResilientImage
                   src={activePhoto.image}
                   alt={activePhoto.title}
@@ -217,13 +223,36 @@ export function GallerySection() {
               type="button"
               onClick={() => setLightboxIndex((lightboxIndex + 1) % GALLERY_PHOTOS.length)}
               aria-label="Foto berikutnya"
-              className="w-12 h-12 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center shrink-0 cursor-pointer"
+              className="hidden sm:flex w-12 h-12 rounded-full bg-white/15 hover:bg-white/25 text-white items-center justify-center shrink-0 cursor-pointer"
             >
               <ChevronRight className="w-6 h-6" />
             </button>
+
+            <div className="flex sm:hidden items-center justify-between w-full gap-3">
+              <button
+                type="button"
+                onClick={() =>
+                  setLightboxIndex(
+                    (lightboxIndex - 1 + GALLERY_PHOTOS.length) % GALLERY_PHOTOS.length
+                  )
+                }
+                className="flex-1 min-h-[48px] px-4 rounded-full bg-white/15 hover:bg-white/25 text-white text-sm font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <ChevronLeft className="w-5 h-5" />
+                <span>Sebelumnya</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setLightboxIndex((lightboxIndex + 1) % GALLERY_PHOTOS.length)}
+                className="flex-1 min-h-[48px] px-4 rounded-full bg-white/15 hover:bg-white/25 text-white text-sm font-semibold flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>Berikutnya</span>
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
           </div>
 
-          <div className="h-6" />
+          <div className="h-2 shrink-0" />
         </div>
       )}
     </section>
